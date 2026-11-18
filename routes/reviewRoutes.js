@@ -4,10 +4,7 @@ const mongoose = require('mongoose');
 const Review = require('../models/Review');
 const { verifyToken } = require('../middleware/authMiddleware');
 
-// ==========================================
-// GET REVIEWS FOR A SPECIFIC EMPLOYER / COMPANY
-// Endpoint: GET /api/reviews/employer/:employerId
-// ==========================================
+
 router.get('/employer/:employerId', async (req, res) => {
   try {
     const { employerId } = req.params;

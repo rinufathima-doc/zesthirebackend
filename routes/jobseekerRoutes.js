@@ -160,7 +160,6 @@ router.post('/photo', verifyToken, upload.single('profilePicture'), async (req, 
       { new: true }
     ).select('-password');
 
-    // Also update profile record so it stays fully synchronized
     await JobSeekerProfile.findOneAndUpdate(
       { userId },
       { $set: { profilePicture: photoUrl } },
@@ -175,6 +174,31 @@ router.post('/photo', verifyToken, upload.single('profilePicture'), async (req, 
     });
   } catch (error) {
     console.error('Photo Upload Error:', error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ==========================================
+// GET RESUME URL
+// @route   GET /api/jobseeker/resume
+// @access  Private
+// ==========================================
+router.get('/resume', verifyToken, async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    const profile = await JobSeekerProfile.findOne({ userId }).select('resumeUrl updatedAt');
+
+    if (!profile || !profile.resumeUrl) {
+      return res.status(404).json({ success: false, message: 'No resume found for this user.' });
+    }
+
+    return res.status(200).json({
+      success: true,
+      resumeUrl: profile.resumeUrl,
+      updatedAt: profile.updatedAt,
+    });
+  } catch (error) {
+    console.error('Fetch Resume Error:', error);
     return res.status(500).json({ success: false, message: error.message });
   }
 });

@@ -43,15 +43,12 @@ const jobSeekerProfileSchema = new mongoose.Schema(
     skills: [{ 
       type: String 
     }],
-    
-    // Saved jobs reference array (Fully preserved)
     savedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Job",
       },
     ],
-
     education: [
       {
         institution: String,
@@ -61,7 +58,6 @@ const jobSeekerProfileSchema = new mongoose.Schema(
         endYear: String,
       },
     ],
-    
     experience: [
       {
         company: String,
@@ -72,7 +68,6 @@ const jobSeekerProfileSchema = new mongoose.Schema(
         description: String,
       },
     ],
-    
     resumeUrl: { 
       type: String, 
       default: "" 
